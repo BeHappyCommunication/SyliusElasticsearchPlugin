@@ -50,7 +50,7 @@ final class OptionTaxonsBuilder extends AbstractBuilder
     /**
      * @var array
      */
-    private $excludedOptions;
+    private $includedOptions;
 
     /**
      * @param RepositoryInterface $productOptionValueRepository
@@ -66,14 +66,14 @@ final class OptionTaxonsBuilder extends AbstractBuilder
         ProductTaxonsMapperInterface $productTaxonsMapper,
         string $optionProperty,
         string $taxonsProperty,
-        array $excludedOptions = []
+        array $includedOptions = []
     ) {
         $this->productOptionValueRepository = $productOptionValueRepository;
         $this->productVariantRepository = $productVariantRepository;
         $this->productTaxonsMapper = $productTaxonsMapper;
         $this->optionProperty = $optionProperty;
         $this->taxonsProperty = $taxonsProperty;
-        $this->excludedOptions = $excludedOptions;
+        $this->includedOptions = $includedOptions;
     }
 
     /**
@@ -84,7 +84,7 @@ final class OptionTaxonsBuilder extends AbstractBuilder
         $documentProductOption = $event->getObject();
 
         if (!$documentProductOption instanceof ProductOptionInterface
-            || in_array($documentProductOption->getCode(), $this->excludedOptions)
+            || !in_array($documentProductOption->getCode(), $this->includedOptions)
         ) {
             return;
         }
