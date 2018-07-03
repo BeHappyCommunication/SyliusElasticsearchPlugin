@@ -44,7 +44,7 @@ final class AttributeTaxonsBuilder extends AbstractBuilder
     /**
      * @var array
      */
-    private $excludedAttributes;
+    private $includedAttributes;
 
     /**
      * @param ProductAttributeValueRepositoryInterface $productAttributeValueRepository
@@ -58,13 +58,13 @@ final class AttributeTaxonsBuilder extends AbstractBuilder
         ProductTaxonsMapperInterface $productTaxonsMapper,
         string $attributeProperty,
         string $taxonsProperty,
-        array $excludedAttributes = []
+        array $includedAttributes = []
     ) {
         $this->productAttributeValueRepository = $productAttributeValueRepository;
         $this->productTaxonsMapper = $productTaxonsMapper;
         $this->attributeProperty = $attributeProperty;
         $this->taxonsProperty = $taxonsProperty;
-        $this->excludedAttributes = $excludedAttributes;
+        $this->includedAttributes = $includedAttributes;
     }
 
     /**
@@ -75,7 +75,7 @@ final class AttributeTaxonsBuilder extends AbstractBuilder
         $documentAttribute = $event->getObject();
 
         if (!$documentAttribute instanceof AttributeInterface
-            || in_array($documentAttribute->getCode(), $this->excludedAttributes)
+            || !in_array($documentAttribute->getCode(), $this->includedAttributes)
         ) {
             return;
         }
